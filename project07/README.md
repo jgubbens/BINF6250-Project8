@@ -1,9 +1,9 @@
 # Introduction
-Description of the project
+This project implements the Burrows-Wheeler Transform (BWT) and uses it for exact pattern matching. The BWT is a reversible, block-sorting transformation. A special end-of-string character (`$`), which is lexicographically smaller than every other character, is appended to the text, and all cyclic rotations of the string are generated and sorted lexicographically to form the Burrows-Wheeler Matrix (BWM). The last column of the BWM is the BWT. It is a permutation of the original text that tends to group identical characters into long runs, which makes the text much easier to compress.
+
+The BWT also underlies modern sequence alignment. Nearly all established short-read aligners use an index built on it (the FM-index) to map reads to a reference genome. Bowtie, for example, aligns short sequences to genome-sized references quickly while keeping a small memory footprint.
 
 # Pseudocode
-Put pseudocode in this box:
-
 ```
 def BWT(string):
     IF string does not end with $:
@@ -114,10 +114,13 @@ def run_length_decode(encoded):
 ```
 
 # Successes
-Description of the team's learning points
+**Collaboaration and Communication:** One of the major things that made this project successful was our ability and willingness to meet sychronously a few times to talk through the parts we weren't understanding and bounce ideas off of each other. We all contributed different ideas for implementations, and worked together through various versions of our code to make sure we all agreed on which implementation strategy made the most sense and which would work best for us. 
+
 
 # Struggles
-We had some struggles with the `def BWT()` function. Initially, the code included `BWT += r[0][-1]` which read the first column instead of the last one. We also initially struggled with understanding how to utilize the two count dictionaries in the suggested `def cal_count()` default pseudocode. After looking into the `Counter()` dictionary import, it made sense. 
+**Initial Setup:** We had some struggles with the `def BWT()` function. Initially, the code included `BWT += r[0][-1]` which read the first column instead of the last one. We also initially struggled with understanding how to utilize the two count dictionaries in the suggested `def cal_count()` default pseudocode. After looking into the `Counter()` dictionary import, it made sense. 
+
+**Pattern Matching:** This seemed to be the hardest part for our group. We initially had some confusion differentiating the `occur` and `count` dictionaries. We had to go back into some class notes as well as the HTML to get visuals and explanations on what they each were supposed to contain.
 
 # Personal Reflections
 ## Yulia
@@ -127,7 +130,8 @@ This project was difficult to wrap my head around conceptually, but when my grou
 ## Kailey
 Other members' reflections on the project\
 
-## Margaret
+## Maggie
+As expected, we had to spend a lot of time working together to conceptually understand this project. I think we were all initilially on the same page in our understanding: we understood the beginning part of this program, but were confused on the pattern matching aspect. We spent a few meetings just oing over pseudocode and the HTML provided to try to wrap our heads around it. Like Yulia mentioned, we had some trouble understanding the initial pseudocode that was given, and had to parse through that piece by peice. We ended up using the given pseudocode more as a guide for our new ideas, which seemed to work pretty well. OUr collaboratin was vital to me understanding the concepts here, and I feel like we ended in a good spot of all of us understanding the concept and the code we wrote.
 
 # Generative AI Appendix
 Claude Opus 5.5 was used to reformat/correct our original pseudocode to match the code changes.
