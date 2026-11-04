@@ -125,7 +125,9 @@ This project was difficult to wrap my head around conceptually, but when my grou
 
 
 ## Kailey
-Other members' reflections on the project\
+Understanding the BWT algorithm was difficult conceptually. The toughest part for me to comprehend was pattern matching. A key aspect of this project was reviewing and comprehending the concept with my group. We met with the time we all could meet to create a consensus on our understanding of the algorithm and how we should approach this project. We were able to walk-through the entirety of the .html provided to us and ask questions when there was confusion and plan how we would approach constructing the code. In addition to our own pseudocode, having the pseudocode provided, created a supplementary learning material that would provide the basis for our code. I felt like I was overly ambitious in the beginning of the project, thinking we would require complex data structures like NumPy arrays to configure the data; however after taking some time to process the material, I was able to realize that this step was possibly not needed for this project. With reading more about NumPy and its capabilities and thinking about larger datasets and scalability, using arrays would be helpful in this aspect. 
+
+This project has helped me develop a new learning approach to tackling these projects. I first learned that I need to comprehend the algorithm and perform an example by hand if possible. Then write out the pseudocode. From the pseudocode, I can go line by line constructing code and use test code to check my progress! Finally, I try to include biological considerations if I am able to code such complexities. 
 
 ## Margaret
 
