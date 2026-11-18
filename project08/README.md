@@ -183,7 +183,31 @@ State path for input 'ATATCGCGCGCGAT': ('GGGGIIIIIIIIGG', -21.20203079978548)
 Description of the team's learning points
 
 # Struggles
-Description of the stumbling blocks the team experienced
+
+First error we encountered below when running the toy dataset, the error check loops over the keys only, so it crashes. Modified the code to sets: `if set(row) != set(self.states):`
+```
+ValueError                                Traceback (most recent call last)
+Cell In[7], line 21
+     17     "I": {"A": 0.1, "C": 0.4, "G": 0.4, "T": 0.1},
+     18     "G": {"A": 0.3, "C": 0.2, "G": 0.2, "T": 0.3}
+     19 }
+     20 
+---> 21 toy_hmm = HiddenMarkovModel(init_probs, trans_probs, emit_probs)
+     22 print(f"State path for input 'GGCACTGAA': {toy_hmm.viterbi("GGCACTGAA")}")
+     23 print(f"State path for input 'ATATCGCGCGCGAT': {toy_hmm.viterbi("ATATCGCGCGCGAT")}")
+
+Cell In[6], line 51, in HiddenMarkovModel.__init__(self, init_probs, trans_probs, emit_probs)
+     47         for state, row in emit_probs.items():
+     48             self._checksum(f"emit_probs[{state!r}]", row)
+     49 
+     50         # trans_probs references unknown state
+---> 51         for state, row in trans_probs:
+     52             if row.key() != self.states:
+     53                 raise ValueError("trans_probs[{state}] references unknown state")
+     54         #-----------------------------------
+
+ValueError: not enough values to unpack (expected 2, got 1)
+```
 
 # Personal Reflections
 ## Group Leader
