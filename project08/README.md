@@ -49,7 +49,9 @@ A path probability is a product of many numbers less than 1. Multiplying many of
 3. **Termination and traceback**
    - Select the final state with the highest log probability.
    - Follow the traceback pointers backward to reconstruct the optimal path.
-
+  
+**Our main dataset used**
+We implemented Viterbi by attempting to use the entire chromosome 22 sequence, consisting of 50,818,468 bases. Using a UCSC derived file, cpgIslandExt.txt, we extracted the CpG regions of chr22 and used this to define our hidden states (CpG vs Genomic) and calculate its initial, emission, and transition probabilities to run the chr22 sequence with. 
 
 # Pseudocode
 The pseudocode for this project is as follows:
@@ -184,7 +186,7 @@ Description of the team's learning points
 
 # Struggles
 
-First error we encountered below when running the toy dataset, the error check loops over the keys only, so it crashes. Modified the code to sets: `if set(row) != set(self.states):`
+First error we encountered below when running the toy dataset, the error check loops over the keys only, so it crashes. We modified the code to use sets: `if set(row) != set(self.states):`
 ```
 ValueError                                Traceback (most recent call last)
 Cell In[7], line 21
@@ -209,9 +211,42 @@ Cell In[6], line 51, in HiddenMarkovModel.__init__(self, init_probs, trans_probs
 ValueError: not enough values to unpack (expected 2, got 1)
 ```
 
+The next major error message we got was in actually running the Viterbi on the chr22 sequence, after successfully loading the model with calculated initial, emission, and transition probabilities for chr22. It raises a key error upon encountering "N" bases in the sequence string, so we needed to account for that possibility in the Viterbi as well. Our next steps are to optimize to handle that case by writing a message in the error checking section notifying when the input sequence has bases other than A C G and T, and in the same check run Viterbi with the non-N chunks of sequence, retaining the correct positions.
+```
+{
+	"name": "KeyError",
+	"message": "'N'",
+	"stack": "---------------------------------------------------------------------------
+KeyError                                  Traceback (most recent call last)
+Cell In[13], line 28
+     24     sequence = \"\".join(line.strip() for line in fasta_file if not line.startswith(\">\")).upper()
+     25 print(f\"\
+Loaded chr22: {len(sequence):,} bases\")
+     26 
+     27 # Run Viterbi on the whole chromosome
+---> 28 path, log_prob = chr22_hmm.viterbi(sequence)
+
+Cell In[8], line 105, in HiddenMarkovModel.viterbi(self, seq)
+    101         # Set up probability matrix using initial probabilities and the first observation
+    102         # Initialize a traceback matrix for path reconstruction
+    103         first_row = {}
+    104         for s in self.states:
+--> 105             first_row[s] = math.log(self.init_probs[s]) + math.log(self.emit_probs[s][seq[0]])
+    106         prob_matrix = [first_row]
+    107 
+    108         traceback = [{s: None for s in self.states}]
+
+KeyError: 'N'"
+}
+```
+
+
 # Personal Reflections
-## Group Leader
-Group leader's reflection on the project
+## Yulia
+Starting this notebook with my group members from scratch with no given datasets was initially challenging, as we had to chat through all the components that we would need. First we started with conceptually understanding the Viterbi lecture notes. Then, understanding what types of biological datasets could work well with the Viterbi model, and realizing that we had to make the Viterbi class very generalizable to handle any sorts of input data and N number of hidden states. We decided to implement a toy dataset, and a chromosome 22 dataset using the CpG and Genomic states. I primarily worked on the function to incorporate the chr22 sequence, define the states and the probabilities to pass it into the model. It took a while for me to understand how to calculate emission and transition probabilities, so I had to use outside resources for that. We were not able to run the model on the chr22 data since we did not handle the N stretches in the sequence itself, although we did in calculating probabilities, so that will be our next step. I look forward to implementing the next steps of the Hidden Markov Model we will learn about, and working with other biological datasets that fit the Viterbi model- so that we can further optimize our code to be generalizable and handle different types of cases. 
+
+## Other member
+Other members' reflections on the project
 
 ## Other member
 Other members' reflections on the project
@@ -230,4 +265,4 @@ Forney, G. D., Jr. (1973). The Viterbi algorithm. Proceedings of the IEEE, 61(3)
 Viterbi, A. (1967). Error bounds for convolutional codes and an asymptotically optimum decoding algorithm. IEEE Transactions on Information Theory, 13(2), 260–269. https://doi.org/10.1109/TIT.1967.1054010
 
 # Generative AI Appendix
-As per the syllabus
+Claude Opus 5.5 was used to help construct the `train_cpg_hmm()` function, with input questions: "What is the best way to process and store sequence data for use in hidden states and calculating probabilities?" "How do I calculate emission probabilities?" "How do I calculate transition probabilities?". From these results, suggestions to store the sequence in Numpy array as bytes was implemented, alongside adding in pseudocounts to prevent any probability from being 0 which would fail in Viterbi log calculation, and calculating transition "codes". 
